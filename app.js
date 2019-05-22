@@ -1,24 +1,31 @@
+//working on rendering using javascript+jquery only
+//issue: when removing last item in todos, it returns undefined 
+
+
 var todoInput = document.getElementById("todo-input");
 $("#add-todo-btn").on('click',addTodo)
 $("#todos").on('click','#delete-todo-btn', deleteTodo)
 $("#todos").on('click', '#complete-todo', toggleTodo)
 $('.filter').on('change', filterTodos)
-$('.footer').on('click','.clear-completed',clearCompleted)
+//$('.footer').on('click','.clear-completed',clearCompleted)
 $('#todos').on('click',"#add-sub-todos-btn", addSubTodo)
 
 
 var todos = store('stored-todos');
 
-var templateSource = $('#todo-template').html();
-var template = Handlebars.compile(templateSource);
-var footerTemplateSource = $('#footer-template').html();
-var footerTemplate = Handlebars.compile(footerTemplateSource);
+//  TEMPLATES
+// var templateSource = $('#todo-template').html();
+// var template = Handlebars.compile(templateSource);
+// var footerTemplateSource = $('#footer-template').html();
+// var footerTemplate = Handlebars.compile(footerTemplateSource);
+//
 
 function addTodo(){
   todos.push({
     id: uid(),
     title: todoInput.value,
     completed: false,
+    subTodos: [],
   })
   store('stored-todos', todos);
   render(todos);
@@ -26,7 +33,8 @@ function addTodo(){
 }
 
 function findTodo(e) {
-  let targetId = e.target.parentElement.dataset.id;
+  debugger;
+  let targetId = e.target.parentElement.id;
   let todoToAddSubTo = todos.filter(e => e.id == targetId)[0];
   let todoIndex = todos.indexOf(todoToAddSubTo);
   return todos[todoIndex]
@@ -34,35 +42,26 @@ function findTodo(e) {
 
 function addSubTodo(e){
   let todo = findTodo(e);
-  if (todo.subTodos) {
   todo.subTodos.push({
     id: uid(),
     title: todoInput.value,
     completed: false,
+    subTodos: [],
   })
-} else {
-  todo.subTodos = [];
-  todo.subTodos.push({
-    id: uid(),
-    title: todoInput.value,
-    completed: false,
-  })
-}
   store('stored-todos', todos);
   render(todos);
   $("#todo-input").focus()
 }
 
 function deleteTodo(e) {
-  let id = e.target.parentElement.dataset.id
+  let id = e.target.parentElement.id
   todos = todos.filter(e => e.id != id)
   store('stored-todos', todos);
   render(todos);
 }
 
 function toggleTodo(e) {
-  let id = e.target.parentElement.dataset.id;
-
+  let id = e.target.parentElement.id;
   todos = todos.map((todo) => {
     if (todo.id === id) {
       todo.completed = !todo.completed;
@@ -104,23 +103,65 @@ function store(namespace, data) {
   }
 }
 
+// function render(todos) {
+//   $('#todos').html(template(todos));
+//   todoInput.value = '';
+//   renderFooter()
+// }
+
 function render(todos) {
-  $('#todos').html(template(todos));
+  if (!todos) {
+    $("#todos").html('');
+    return;
+  }
+  if (todos.length == 0) {
+    $("#todos").html('');
+    todoInput.value = '';
+  }
+
+  $("#todos").html(todosParser(todos));
   todoInput.value = '';
-  renderFooter()
+}
+
+function todosParser(todos) {
+  let html = '';
+
+  if (todos.length > 1) {
+    //recursively builds html to append to #todos UL
+    for (let i = 0; i < todos.length; i++) {
+      let todo = todos[i];
+      html += todosParser(todo);
+    }
+    return html;
+  }
+
+  else {
+    let completed = todos.completed ? "class='todo completed'" : "class='todo'"
+    let completeTodoButton = `<button id="complete-todo">`;
+    if (todos.completed) {
+      completeTodoButton += `(*)</button>`
+    } else {
+      completeTodoButton += `()</button>`
+    }
+    return `<li id="${todos.id}" ${completed}>${completeTodoButton} ${todos.title} <button id="delete-todo-btn">remove</button><button id="add-sub-todos-btn">add sub-todos</button></li>`
+  }
 }
 
 function renderFooter(){
-  let todoCount = todos.length;
-  let completedTodoCount = todos.filter(e => e.completed).length;
-  let incompleteTodoCount = todoCount - completedTodoCount;
-  let template = footerTemplate({
-    activeTodoCount: incompleteTodoCount,
-    completedTodos: completedTodoCount,
-  })
-  $(".footer").toggle(todoCount > 0).html(template)
 
 }
+
+// function renderFooter(){
+//   let todoCount = todos.length;
+//   let completedTodoCount = todos.filter(e => e.completed).length;
+//   let incompleteTodoCount = todoCount - completedTodoCount;
+//   let template = footerTemplate({
+//     activeTodoCount: incompleteTodoCount,
+//     completedTodos: completedTodoCount,
+//   })
+//   $(".footer").toggle(todoCount > 0).html(template)
+//
+// }
 
 //taken fomr todoMVC
 function uid() {
