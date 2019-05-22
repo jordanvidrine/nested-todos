@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Nested Todos App</title>
+    <link rel="stylesheet" href="./app.css">
+  </head>
+  <body>
+    <h1>Nested Todos App</h1>
+    <input type="text" id="todo-input"></input><button id="add-todo-btn">Add</button>
+    <input class="filter" type="radio" name="filter" value="show-all"><label for="show-all">Show All</label>
+    <input class="filter" type="radio" name="filter" value="show-completed"><label for="show-completed">Show Completed</label>
+    <input class="filter" type="radio" name="filter" value="show-incomplete"><label for="show-incomplete">Show Incomplete</label>
+
+    <ul id="todos">
+    </ul>
+
+    <footer class ="info">
+      <p>Created by Jordan Vidrine</p>
+    </footer>
+    <footer class="footer">
+    </footer>
+      <!-- HANDLEBARS TEMPLATE FOR TODOS -->
+      <script id="todo-template" type="text/x-handlebars-template">
+        {{#this}}
+        <li class="todo" data-id="{{id}}">
+            <button id="complete-todo">{{#if completed}}(*){{else}}(){{/if}}</button>
+            <label {{#if completed}}class="completed"{{/if}}>{{title}}</label>
+            <button id="delete-todo-btn">remove</button>
+            <button id="add-sub-todos-btn">add sub-todos</button>
+        </li>
+        {{/this}}
+      </script>
+      <!-- END HANDLEBARS TODOS TEMPLATE -->
+      <!-- FOOTER TEMPLATE -->
+      <script id="footer-template" type="text/x-handlebars-template">
+        <span class="todo-count"><strong>{{activeTodoCount}}</strong> {{activeTodoWord}} left</span>
+        <ul class="filters">
+        {{#if completedTodos}}<button class="clear-completed">Clear completed</button>{{/if}}
+      </script>
+      <!-- END FOOTER TEMPLATE -->
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
+      <script
+			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			  crossorigin="anonymous"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
