@@ -1,13 +1,7 @@
 //current issues:
-//nested ULs appear BEFORE the LI they belong too ie.
-// one -1
-// one -2
-//one
-// two-1
-// two-2
-//two
+//cant nest more than one tabbed todo
 
-//also, nesting onto a subTodo returns an error from findTodo
+//cant toggle subTodos
 
 var todoInput = document.getElementById("todo-input");
 $("#add-todo-btn").on('click',addTodo)
@@ -39,18 +33,20 @@ function addTodo(){
   $("#todo-input").focus()
 }
 
-// function findTodo(e) {
-//   let targetId = e.target.parentElement.id;
-//   let todoToAddSubTo = todos.filter(e => e.id == targetId)[0];
-//   let todoIndex = todos.indexOf(todoToAddSubTo);
-//   return todos[todoIndex]
-// }
+function findTodo(e) {
+  debugger;
+   let targetId = e.target.parentElement.id;
+   let todoToAddSubTo = todos.filter(e => e.id == targetId)[0];
+   let todoIndex = todos.indexOf(todoToAddSubTo);
+  return todos[todoIndex]
+ }
 
-function findTodo(e){
+//function findTodo(e){
 
-}
+//}
 
 function addSubTodo(e){
+  debugger;
   let todo = findTodo(e);
   todo.subTodos.push({
     id: uid(),
@@ -71,7 +67,9 @@ function deleteTodo(e) {
 }
 
 function toggleTodo(e) {
+  console.log(e);
   let id = e.target.parentElement.id;
+  console.log(id)
   todos = todos.map((todo) => {
     if (todo.id === id) {
       todo.completed = !todo.completed;
@@ -120,20 +118,20 @@ function render(todos) {
     todoInput.value = '';
     return;
   }
-
   $("#todos").html(todosParser(todos));
   todoInput.value = '';
 }
 
 function todosParser(todos) {
   let html = '';
-
   if (todos.length >= 1) {
     //recursively builds html to append to #todos UL
     for (let a = 0; a < todos.length; a++) {
       let todo = todos[a];
+      if (!todo.subTodos.length > 0) html += todosParser(todo);
       //builds up the inner arrays if subTodo exists
       if (todo.subTodos.length > 0) {
+        html += todoCreator(todo);
         for (let b = 0; b < todo.subTodos.length; b++) {
           let subTodo = todo.subTodos[b];
           //if this is the beginning of a subTodo array, add <ul> to the front
@@ -150,30 +148,33 @@ function todosParser(todos) {
           }
         }
       }
-      html += todosParser(todo);
     }
-    return html;
   }
 
   else {
-    let completed = todos.completed ? "class='todo completed'" : "class='todo'"
-    let completeTodoButton = `<button id="complete-todo">`;
-    if (todos.completed) {
-      completeTodoButton += `(*)</button>`
-      //only inserts button IF subTodos are all complete or non-existant
-    } else if (todos.subTodos.filter(e=>e.completed).length === todos.subTodos.length) {
-      completeTodoButton += `()</button>`
-    } else {
-      completeTodoButton = '';
-    }
-    return (
-    `<li id="${todos.id}" ${completed}>` +
-      `${completeTodoButton} ${todos.title}` +
-      `<button id="delete-todo-btn">remove</button>` +
-      `<button id="add-sub-todos-btn">add sub-todos</button>` +
-    `</li>`
-    )
+    html += todoCreator(todos)
   }
+  return html;
+}
+
+function todoCreator(todo) {
+  let completed = todo.completed ? "class='todo completed'" : "class='todo'"
+  let completeTodoButton = `<button id="complete-todo">`;
+  if (todo.completed) {
+    completeTodoButton += `(*)</button>`
+    //only inserts button IF subTodos are all complete or non-existant
+  } else if (todo.subTodos.filter(e=>e.completed).length === todo.subTodos.length) {
+    completeTodoButton += `()</button>`
+  } else {
+    completeTodoButton = '';
+  }
+  return (
+  `<li id="${todo.id}" ${completed}>` +
+    `${completeTodoButton} ${todo.title}` +
+    `<button id="delete-todo-btn">remove</button>` +
+    `<button id="add-sub-todos-btn">add sub-todos</button>` +
+  `</li>`
+  )
 }
 
 function renderFooter(){
