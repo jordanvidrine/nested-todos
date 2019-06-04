@@ -188,9 +188,6 @@ function render(todos) {
   todoInput.value = '';
 }
 
-//current issue is that once this functions recurses down to an element, it stops checking to see if
-//there are subTodos
-
 function todoParser(arr) {
     return arr.reduce(function(accumulator,currentValue,idx) {
             //add the current element to the accumulator html as the first LI tag
