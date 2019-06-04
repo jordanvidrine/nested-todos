@@ -2,10 +2,50 @@ var todoInput = document.getElementById("todo-input");
 $("#add-todo-btn").on('click',addTodo)
 $("#todos").on('click','#delete-todo-btn', deleteTodo)
 $("#todos").on('click', '#complete-todo', toggleTodo)
+$("#todos").on('dblclick', ".todo", editTodo)
 $('.filter').on('change', filterTodos)
 $('#todos').on('click',"#add-sub-todos-btn", addSubTodo)
+  $("#todos").on('click', "#edit-todo-btn", submitEdit)
 
 var todos = store('stored-todos');
+
+function editTodo(e) {
+  $("#todos").off('dblclick', ".todo", editTodo)
+  let id = e.target.id;
+  let prevText = e.target.firstElementChild.nextSibling.data;
+  let todoToEdit = document.getElementById(id);
+  let editInput = `- <input type="text" id="edit-input" value="${prevText}"></input><button id="edit-todo-btn">Confirm</button>`
+  $(todoToEdit).html(editInput)
+}
+
+function submitEdit(e) {
+  let textValue = e.target.previousElementSibling.value;
+  let id = e.target.parentElement.id;
+  editTodosInPlace(todos,id,textValue);
+  store('stored-todos', todos);
+  render(todos);
+  $("#todos").on('dblclick', ".todo", editTodo)
+}
+
+function editTodosInPlace(todos,id,text) {
+  debugger;
+  if (Array.isArray(todos)) {
+    return todos.map(todo => {
+      if (todo.id === id) {
+        todo.title = text;
+      }
+      if (todo.subTodos.length) {
+        editTodosInPlace(todo.subTodos,id,text);
+      }
+      return todo;
+    })
+  } else {
+    if (todos.id === id) {
+      todos.text = text;
+    }
+    return todos;
+  }
+}
 
 function addTodo(){
   todos.push({
@@ -108,7 +148,6 @@ function toggleTodo(e) {
 }
 
 function toggleInPlace(todos, id) {
-  debugger;
   if (Array.isArray(todos)) {
     return todos.map(todo => {
       if (todo.subTodos.length) {
