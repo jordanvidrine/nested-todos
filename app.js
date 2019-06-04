@@ -1,6 +1,3 @@
-//TODO: 1 - Remove '()' button and add double click to complete functionality
-//      2 - Edit styling of list
-
 var todoInput = document.getElementById("todo-input");
 $("#add-todo-btn").on('click',addTodo)
 $("#todos").on('click','#delete-todo-btn', deleteTodo)
@@ -8,10 +5,7 @@ $("#todos").on('click', '#complete-todo', toggleTodo)
 $('.filter').on('change', filterTodos)
 $('#todos').on('click',"#add-sub-todos-btn", addSubTodo)
 
-
 var todos = store('stored-todos');
-
-
 
 function addTodo(){
   todos.push({
