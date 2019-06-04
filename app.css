@@ -85,7 +85,7 @@ h1 {
   font-family: 'Cabin', sans-serif;
 }
 
-#todo-input {
+#todo-input, #edit-input {
   background-color: rgba(25,32,43,0.2);
   height: 20px;
   border: none;
@@ -104,6 +104,23 @@ button {
   height: 22px;
   color: rgba(25,32,43,0.7);
 }
+
+.completed button {
+  border: none;
+  background-color: rgba(25,32,43,.15);
+  margin-left: 7px;
+  height: 22px;
+  color: rgba(25,32,43,0.2);
+}
+
+.completed button:hover {
+  border: none;
+  background-color: rgba(25,32,43,0.2);
+  margin-left: 7px;
+  height: 22px;
+  color: rgba(25,32,43,0.3);
+}
+
 
 button:hover {
   background-color: rgba(25,32,43,0.6);
