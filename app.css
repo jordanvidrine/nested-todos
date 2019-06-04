@@ -1,6 +1,83 @@
 body  {
   background-color: #f9fafc;
   color: #303235;
+  font-family: 'Cabin', sans-serif;
+}
+/* RADIO BUTTON STYLING */
+.container {
+  position: relative;
+  padding-left: 17px;
+  margin-left: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  height: 12px;
+  width: 12px;
+  background-color: rgba(25,32,43,0.2);
+  border-radius: 50%;
+}
+
+.container input:checked ~ .checkmark {
+  height: 4px;
+  width: 4px;
+  border: 4px solid #CCCED3;
+  background-color: #3e4959;
+  border-radius: 50%;
+}
+
+/* TODO CHECKBOX STYLING */
+
+.todo-container {
+  position: relative;
+  top: 2px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.todo-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.todo-checkmark {
+  position: absolute;
+  left: -17px;
+  top: 9px;
+  height: 12px;
+  width: 12px;
+  background-color: rgba(25,32,43,0.2);
+}
+
+.todo-container input:checked ~ .todo-checkmark {
+  height: 4px;
+  width: 4px;
+  border: 4px solid #CCCED3;
+  background-color: #3e4959;
 }
 
 h1 {
@@ -22,15 +99,14 @@ h1 {
 
 button {
   border: none;
-  background-color: #3e4959;
+  background-color: rgba(25,32,43,0.4);
   margin-left: 7px;
-  height: 30px;
-  color: white;
-  font-weight: bold;
+  height: 22px;
+  color: rgba(25,32,43,0.7);
 }
 
 button:hover {
-  background-color: #313a47;
+  background-color: rgba(25,32,43,0.6);
 }
 
 #add-todo-btn {
@@ -47,9 +123,19 @@ button:hover {
 }
 
 li {
-  list-style: unset;
+  list-style: none;
   margin: 0 0 7px 0;
-  background-color: rgba(255,255,255,0.1);
+}
+
+footer p {
+  font-size: 15px;
+  font-weight: lighter;
+}
+
+footer p.name {
+  font-size: 12px;
+  font-style: italic;
+  opacity: .5;
 }
 
 .completed {

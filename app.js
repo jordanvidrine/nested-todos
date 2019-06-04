@@ -107,23 +107,29 @@ function deleteInPlace(todos, id) {
 }
 
 function toggleTodo(e) {
-  let id = e.target.parentElement.id;
+  let id = e.target.parentElement.parentElement.id;
   todos = toggleInPlace(todos,id);
   store('stored-todos', todos);
   render(todos);
 }
 
 function toggleInPlace(todos, id) {
+  debugger;
   if (Array.isArray(todos)) {
     return todos.map(todo => {
       if (todo.subTodos.length) {
         toggleInPlace(todo.subTodos,id);
-        if (todo.id === id) {
+        //only toggles if it is a solo todo OR all of the todos SUBtodos are complete
+        if (todo.id === id && todo.subTodos.filter(e=>e.completed).length === todo.subTodos.length) {
           todo.completed = !todo.completed;
+        }
+        //if a Todo is complete, but you uncheck one of its subs, the parent will become incomplete
+        if(todo.subTodos.filter(e=>e.completed).length !== todo.subTodos.length) {
+          todo.completed = false;
         }
         return todo;
       } else {
-        if (todo.id === id) {
+        if (todo.id === id ) {
           todo.completed = !todo.completed;
         }
         return todo;
@@ -210,21 +216,14 @@ function todoParser(arr) {
 }
 
 function todoCreator(todo) {
-  let completed = todo.completed ? "class='todo completed'" : "class='todo'"
-  let completeTodoButton = `<button id="complete-todo">`;
-  if (todo.completed) {
-    completeTodoButton += `(*)</button>`
-    //only inserts button IF subTodos are all complete or non-existant
-  } else if (todo.subTodos.filter(e=>e.completed).length === todo.subTodos.length) {
-    completeTodoButton += `()</button>`
-  } else {
-    completeTodoButton = '';
-  }
+  let completed = todo.completed ? "class='todo completed'" : "class='todo'";
+  let checked = todo.completed ? "checked='checked'" : '';
   return (
   `<li id="${todo.id}" ${completed}>` +
-    `${completeTodoButton} ${todo.title} ` +
-    `<button id="delete-todo-btn">remove</button>` +
-    `<button id="add-sub-todos-btn">add sub-todo</button>` +
+    `<label class="todo-container"><input type="checkbox" ${checked} id="complete-todo"><span class="todo-checkmark"></span></label>`+
+    `${todo.title}` +
+    `<button id="delete-todo-btn">x</button>` +
+    `<button id="add-sub-todos-btn">Add sub</button>` +
   `</li>`
   )
 }
