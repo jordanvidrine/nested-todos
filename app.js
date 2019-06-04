@@ -5,7 +5,7 @@ $("#todos").on('click', '#complete-todo', toggleTodo)
 $("#todos").on('dblclick', ".todo", editTodo)
 $('.filter').on('change', filterTodos)
 $('#todos').on('click',"#add-sub-todos-btn", addSubTodo)
-  $("#todos").on('click', "#edit-todo-btn", submitEdit)
+$("#todos").on('click', "#edit-todo-btn", submitEdit)
 
 var todos = store('stored-todos');
 
