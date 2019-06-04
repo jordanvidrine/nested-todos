@@ -6,7 +6,6 @@ $("#add-todo-btn").on('click',addTodo)
 $("#todos").on('click','#delete-todo-btn', deleteTodo)
 $("#todos").on('click', '#complete-todo', toggleTodo)
 $('.filter').on('change', filterTodos)
-//$('.footer').on('click','.clear-completed',clearCompleted)
 $('#todos').on('click',"#add-sub-todos-btn", addSubTodo)
 
 
@@ -25,13 +24,6 @@ function addTodo(){
   render(todos);
   $("#todo-input").focus()
 }
-
-// todo.subTodos.push({
-//   id: uid(),
-//   title: todoInput.value,
-//   completed: false,
-//   subTodos: [],
-// })
 
 function addSubTodo(e){
   let id= e.target.parentElement.id;
@@ -237,23 +229,7 @@ function todoCreator(todo) {
   )
 }
 
-function renderFooter(){
-
-}
-
-// function renderFooter(){
-//   let todoCount = todos.length;
-//   let completedTodoCount = todos.filter(e => e.completed).length;
-//   let incompleteTodoCount = todoCount - completedTodoCount;
-//   let template = footerTemplate({
-//     activeTodoCount: incompleteTodoCount,
-//     completedTodos: completedTodoCount,
-//   })
-//   $(".footer").toggle(todoCount > 0).html(template)
-//
-// }
-
-//taken fomr todoMVC
+//taken from todoMVC
 function uid() {
   /*jshint bitwise:false */
   var i, random;
