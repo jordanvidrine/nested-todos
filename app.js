@@ -1,7 +1,5 @@
-//current issues:
-//cant nest more than one tabbed todo
-
-//cant toggle subTodos
+//TODO: 1 - Remove '()' button and add double click to complete functionality
+//      2 - Edit styling of list
 
 var todoInput = document.getElementById("todo-input");
 $("#add-todo-btn").on('click',addTodo)
