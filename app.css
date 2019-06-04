@@ -1,3 +1,58 @@
+body  {
+  background-color: #f9fafc;
+  color: #303235;
+}
+
+h1 {
+  color:  #303235;
+  font-family: 'Cabin', sans-serif;
+}
+
+#todo-input {
+  background-color: rgba(25,32,43,0.2);
+  height: 20px;
+  border: none;
+  width: 140px;
+  font-family: 'Cabin', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  padding: 5px;
+  color:  #303235;
+}
+
+button {
+  border: none;
+  background-color: #3e4959;
+  margin-left: 7px;
+  height: 30px;
+  color: white;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #313a47;
+}
+
+#add-todo-btn {
+  border: none;
+  background-color: #3e4959;
+  margin-left: 7px;
+  height: 30px;
+  color: white;
+  font-weight: bold;
+}
+
+#add-todo-btn:hover {
+  background-color: #313a47;
+}
+
+li {
+  list-style: unset;
+  margin: 0 0 7px 0;
+  background-color: rgba(255,255,255,0.1);
+}
+
 .completed {
   text-decoration: line-through;
+  color: rgba(25,32,43,0.4);
 }
